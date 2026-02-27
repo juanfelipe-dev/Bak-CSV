@@ -2,14 +2,291 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Exported CSV Files</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Export Complete - BAK-CSV</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      padding: 50px 40px;
+    }
+
+    .success-banner {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .success-icon {
+      font-size: 64px;
+      margin-bottom: 15px;
+      display: inline-block;
+      animation: bounce 0.6s ease-in-out;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    h1 {
+      color: #333;
+      font-size: 32px;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      color: #666;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .file-count {
+      color: #667eea;
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 30px;
+    }
+
+    .files-section {
+      margin-bottom: 30px;
+    }
+
+    .section-title {
+      color: #333;
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .file-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: #f8f9ff;
+      border-radius: 12px;
+      border-left: 4px solid #667eea;
+      transition: all 0.3s ease;
+    }
+
+    .file-item:hover {
+      background: #f0f2ff;
+      transform: translateX(5px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+    }
+
+    .file-name {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #333;
+      font-weight: 500;
+      flex: 1;
+    }
+
+    .file-icon {
+      font-size: 20px;
+    }
+
+    .download-btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .download-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      margin-top: 40px;
+      padding-top: 30px;
+      border-top: 1px solid #eee;
+    }
+
+    .btn-primary, .btn-secondary {
+      flex: 1;
+      padding: 14px 20px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-secondary {
+      background: #f8f9ff;
+      color: #667eea;
+      border: 2px solid #667eea;
+    }
+
+    .btn-secondary:hover {
+      background: #f0f2ff;
+      color: #764ba2;
+      border-color: #764ba2;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-top: 30px;
+      padding-top: 30px;
+      border-top: 1px solid #eee;
+    }
+
+    .stat-box {
+      padding: 15px;
+      background: #f8f9ff;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #667eea;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #999;
+      margin-top: 5px;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 40px 25px;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .file-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .download-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>CSV files generated</h1>
-  <ul>
-    {% for f in files %}
-      <li><a href="/download/{{ f }}?tmp={{ tmpdir }}">{{ f }}</a></li>
-    {% endfor %}
-  </ul>
+  <div class="container">
+    <div class="success-banner">
+      <div class="success-icon">✅</div>
+      <h1>Export Successful!</h1>
+      <p class="subtitle">Your CSV files are ready to download</p>
+      <div class="file-count">📊 {{ files|length }} table(s) exported</div>
+    </div>
+
+    <div class="files-section">
+      <div class="section-title">
+        📁 CSV Files
+      </div>
+      <div class="file-list">
+        {% for f in files %}
+          <div class="file-item">
+            <div class="file-name">
+              <span class="file-icon">📄</span>
+              <span>{{ f }}</span>
+            </div>
+            <a href="/download/{{ f }}?tmp={{ tmpdir }}" class="download-btn">
+              ⬇️ Download
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat-box">
+        <div class="stat-value">{{ files|length }}</div>
+        <div class="stat-label">Files Ready</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value">📊</div>
+        <div class="stat-label">Fully Exported</div>
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <button class="btn-primary" onclick="downloadAll()">📦 Download All</button>
+      <form action="/" style="flex: 1;">
+        <button type="submit" class="btn-secondary" style="width: 100%; margin: 0;">🔄 Upload Another</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function downloadAll() {
+      const files = document.querySelectorAll('.download-btn');
+      files.forEach((link, index) => {
+        setTimeout(() => {
+          window.location.href = link.href;
+        }, index * 300);
+      });
+    }
+  </script>
 </body>
 </html>
