@@ -13,4 +13,6 @@ export FLASK_APP=export_bak.py
 export FLASK_ENV=production
 
 # run the application using gunicorn for production
-exec gunicorn export_bak:app --bind 0.0.0.0:8000 --workers 4
+# Render sets a $PORT environment variable we must bind to
+PORT=${PORT:-8000}
+exec gunicorn export_bak:app --bind 0.0.0.0:$PORT --workers 4
