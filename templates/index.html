@@ -19,14 +19,14 @@
       justify-content: center;
       align-items: center;
       padding: 20px;
+      background-attachment: fixed;
     }
-
     .container {
-      background: white;
+      background: rgba(255, 255, 255, 0.97);
       border-radius: 20px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
       padding: 60px 40px;
-      max-width: 550px;
+      max-width: 580px;
       width: 100%;
       text-align: center;
     }
@@ -46,19 +46,24 @@
     }
 
     .upload-area {
-      border: 3px dashed #667eea;
-      border-radius: 15px;
-      padding: 40px 20px;
-      margin-bottom: 30px;
+      border: 2px dashed #667eea;
+      border-radius: 20px;
+      padding: 50px 30px;
+      margin-bottom: 20px;
       transition: all 0.3s ease;
-      background: #f8f9ff;
+      background: #f4f6ff;
       cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      max-width: 100%;
     }
 
     .upload-area:hover {
       border-color: #764ba2;
-      background: #f0f2ff;
-      transform: translateY(-2px);
+      background: #eef0ff;
+      transform: translateY(-1px);
     }
 
     .upload-area input[type="file"] {
@@ -66,16 +71,15 @@
     }
 
     .upload-icon {
-      font-size: 48px;
-      margin-bottom: 15px;
-      display: inline-block;
+      font-size: 54px;
+      margin-bottom: 20px;
     }
 
     .upload-text {
       color: #667eea;
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 8px;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 6px;
     }
 
     .upload-hint {
@@ -87,14 +91,15 @@
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
       border: none;
-      padding: 16px 40px;
-      font-size: 16px;
-      font-weight: 600;
-      border-radius: 10px;
+      padding: 14px 32px;
+      font-size: 17px;
+      font-weight: 700;
+      border-radius: 12px;
       cursor: pointer;
-      width: 100%;
       transition: all 0.3s ease;
-      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+      box-shadow: 0 12px 30px rgba(102, 126, 234, 0.35);
+      max-width: 260px;
+      width: 100%;
     }
 
     button:hover {
@@ -159,18 +164,8 @@
     <form method="post" enctype="multipart/form-data" id="uploadForm">
       <label for="backupInput" class="upload-area">
         <div class="upload-icon">📁</div>
-        <div class="upload-text">Click to upload your .bak file</div>
-        <div class="upload-hint">or drag and drop</div>
-        <input type="file" id="backupInput" name="backup" accept=".bak" required>
-      </label>
-      <button type="submit">🚀 Upload & Export</button>
-    </form>
-
-    <div class="features">
-      <div class="feature">
-        <div class="feature-icon">⚡</div>
-        <div class="feature-text">Fast Processing</div>
-      </div>
+        <div class="upload-text">Click or drop a .bak file here</div>
+        <div class="upload-hint">Max size 10 GB</div>
       <div class="feature">
         <div class="feature-icon">📊</div>
         <div class="feature-text">All Tables</div>
