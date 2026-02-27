@@ -12,5 +12,5 @@ pip install -r requirements.txt
 export FLASK_APP=export_bak.py
 export FLASK_ENV=production
 
-# run the application
-python export_bak.py
+# run the application using gunicorn for production
+exec gunicorn export_bak:app --bind 0.0.0.0:8000 --workers 4
