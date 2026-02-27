@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Exported CSV Files</title>
+</head>
+<body>
+  <h1>CSV files generated</h1>
+  <ul>
+    {% for f in files %}
+      <li><a href="/download/{{ f }}?tmp={{ tmpdir }}">{{ f }}</a></li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
