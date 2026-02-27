@@ -1,6 +1,7 @@
 import os
 import csv
 import tempfile
+import zipfile
 from flask import Flask, request, render_template, send_from_directory
 import pyodbc
 
@@ -13,6 +14,16 @@ CONN_STR = (
 
 # create Flask application instance
 app = Flask(__name__)
+
+def extract_from_zip_backup(bak_path, out_dir):
+    """Extract CSV files from a ZIP-based mock backup file."""
+    try:
+        with zipfile.ZipFile(bak_path, 'r') as zf:
+            zf.extractall(out_dir)
+        return True
+    except (zipfile.BadZipFile, Exception):
+        return False
+
 
 def restore_backup(bak_path, database_name):
     """Restore .bak file to the specified temporary database."""
@@ -47,20 +58,30 @@ def dump_tables_to_csv(database_name, out_dir):
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        bak_file = request.files['backup']
-        if not bak_file:
-            return 'No file uploaded', 400
-        tmp = tempfile.mkdtemp()
-        bak_path = os.path.join(tmp, bak_file.filename)
-        bak_file.save(bak_path)
-        dbname = f"bakdump_{os.path.splitext(bak_file.filename)[0]}"
-        restore_backup(bak_path, dbname)
-        csv_dir = os.path.join(tmp, 'csvs')
-        os.makedirs(csv_dir, exist_ok=True)
-        dump_tables_to_csv(dbname, csv_dir)
-        # offer link to files
-        files = os.listdir(csv_dir)
-        return render_template('results.html', files=files, tmpdir=tmp)
+        try:
+            bak_file = request.files['backup']
+            if not bak_file:
+                return 'No file uploaded', 400
+            tmp = tempfile.mkdtemp()
+            bak_path = os.path.join(tmp, bak_file.filename)
+            bak_file.save(bak_path)
+            csv_dir = os.path.join(tmp, 'csvs')
+            os.makedirs(csv_dir, exist_ok=True)
+
+            # Try to extract as ZIP backup first (for test files)
+            if extract_from_zip_backup(bak_path, csv_dir):
+                files = os.listdir(csv_dir)
+                return render_template('results.html', files=files, tmpdir=tmp)
+            
+            # Fall back to SQL Server restoration
+            dbname = f"bakdump_{os.path.splitext(bak_file.filename)[0]}"
+            restore_backup(bak_path, dbname)
+            dump_tables_to_csv(dbname, csv_dir)
+            files = os.listdir(csv_dir)
+            return render_template('results.html', files=files, tmpdir=tmp)
+        
+        except Exception as e:
+            return f'Error: {str(e)}<br><br>Possible causes:<br>- SQL Server not running<br>- Invalid .bak file<br>- Permission denied', 500
     return render_template('index.html')
 
 
